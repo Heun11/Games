@@ -1,0 +1,47 @@
+##:kivy
+
+WindowManager:
+    MenuWindow:
+    GameWindow:
+
+<Label>:
+    background_color: (1,0,0,.5)
+    size_hint: 0.3,0.1
+    font_size: 40
+    color: (0.8,0.8,0.8,1)
+    # canvas.before:
+    #     Color:
+    #         rgba: self.background_color
+    #     Rectangle:
+    #         size: self.size
+    #         pos: self.pos
+
+<Button>:
+    size_hint: 0.2,0.1
+    font_size: 40
+    background_color: (1,1,1,0.01)
+    # background_color: (0,0,1,1)
+
+<MenuWindow>:
+    name: "menu"
+
+    Label:
+        text:"Game"
+        pos_hint: {"x":0.35, "y":0.8}
+
+    Button:
+        text:"PLAY"
+        pos_hint: {"x":0.4, "y":0.3}
+        on_release:
+            app.root.current = "game"
+            root.manager.transition.direction="up"
+
+<GameWindow>:
+    name: "game"
+
+    Button:
+        text:"Menu"
+        pos_hint: {"x":0.35, "y":0.9}
+        on_press:
+            app.root.current = "menu"
+            root.manager.transition.direction="down"

@@ -1,0 +1,15 @@
+Flappy Samo Mobile Game
+
+To Do: (✔️)
+  - crate basic app (✔️)
+  - create Bird (✔️)
+  - create Pipes (✔️)
+  - refactor Bird and Pipes (✔️)
+  - collisions (✔️)
+  - create restart system (✔️)
+  - create pause system (X)
+  - create score system (✔️)
+  - images (✔️)
+  - sounds
+  - calculate distance and size of sprites from Window.size (✔️)
+  - fix bugs

@@ -1,0 +1,14 @@
+Sokoban for filip
+
+to do: (✔️)
+    - create terminal version (✔️)
+    - create basic app (✔️)
+    - create basic game (✔️)
+    - create restart system (✔️)
+    - create level editor (✔️)
+    - create level system
+    - calculate distance and size of sprites from Window.size 
+    - images
+    - sounds
+    - fix bugs
+    - add new levels
