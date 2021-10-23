@@ -1,0 +1,5 @@
+{
+    "name":"The Forgotten Place",
+    "static_objects_images":["data/images/scene_1_images/test1.png", "data/images/scene_1_images/test2.png"],
+    "static_objects_pos_size":{"0":{"size":[300,300], "pos":[250,150]}, "1":{"size":[400,200], "pos":[50,100]}}
+}

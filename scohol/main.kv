@@ -24,19 +24,10 @@ WindowManager:
 
 <MenuWindow>:
     name: "menu"
-    h_score:h_score
 
     Label:
-        text:"Tomo"
+        text:"Scohol"
         pos_hint: {"x":0.35, "y":0.8}
-
-    Button:
-        id:h_score
-        text:"click to load!"
-        size_hint: 0.33,0.2
-        pos_hint: {"x":0.35, "y":0.5}
-        on_press:
-            root.load()
 
     Button:
         text:"PLAY"
@@ -49,27 +40,3 @@ WindowManager:
 
 <GameWindow>:
     name: "game"
-
-    dead:dead
-    score_t:score
-
-    Label:
-        id:dead
-        color: (0.8,0,0,1)
-        pos_hint: {"x":0.35, "y":0.6}
-        text:""
-
-    Label:
-        id:score
-        pos_hint: {"x":0.7, "y":0.9}
-        text:"0"
-
-    Button:
-        text:"Menu"
-        background_color: (1,1,1,0.01)
-        size_hint: 0.2,0.1
-        pos_hint: {"x":0.35, "y":0.9}
-        on_press:
-            app.root.current = "menu"
-            root.restart()
-            root.manager.transition.direction="down"
