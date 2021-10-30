@@ -1,0 +1,8 @@
+Rytmus
+
+
+To Do:
+ - musicloader
+ - sounds
+ - compare music
+

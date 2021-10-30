@@ -28,6 +28,9 @@ WindowManager:
     MenuScreen:
     GameScreen:
 
+<GameScreen>:
+    name: "game"
+
 <MenuScreen>:
 	name: 'menu'
 
@@ -43,6 +46,3 @@ WindowManager:
         on_press:
             app.root.current = "game"
             root.manager.transition.direction="up"
-
-<GameScreen>:
-    name: "game"
