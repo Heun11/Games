@@ -29,6 +29,8 @@ class GameScreen(Screen):
         Clock.schedule_interval(self.update,1/self.FPS)
 
     def update(self, dt):
+        with open("data/save.json") as f:
+            self.ac_scene = json.load(f)["ac_scene"]
         self.canvas.clear()
         self.clear_widgets()
         self.add_widget(Label(text=f"{int(1/dt)}", pos_hint={"y":0.9}, size_hint=(0.1,0.1)))
