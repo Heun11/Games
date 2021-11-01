@@ -2,6 +2,15 @@ from kivy.graphics import Rectangle
 from kivy.core.audio import SoundLoader
 import random, json
 
+class Background:
+    def __init__(self, size=(100,100), pos=(0,0), source=""):
+        self.size = size
+        self.pos = pos
+        self.source = source
+
+    def update(self):
+        Rectangle(size=self.size, pos=self.pos, source=self.source)
+
 class Player:
     def __init__(self, size=(100,100), pos=(0,0), ms=[[0,0],[0,0]]):
         self.size = size
@@ -11,7 +20,7 @@ class Player:
             "stand":[""],
             "walking":["", ""]
         }
-        self.walking = {"is":False, "dest":[0,0], "speed":5}
+        self.walking = {"is":False, "dest":[0,0], "speed":3.5}
         self.inventory = []
 
     def update(self):

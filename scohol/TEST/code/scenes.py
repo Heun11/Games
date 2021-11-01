@@ -5,16 +5,21 @@ from kivy.graphics import Color
 class Scene1:
     def __init__(self, screen_size):
         self.screen_size = screen_size
-        self.objects = [Picture(pos=[400, 500]), Computer(pos=[600, 350]), Door(pos=[1000, 150], size=[150, 300], scene=2)]
-        self.movable_space = [[100,screen_size[0]-100],[10,300]]
+        self.objects = [Picture(pos=[400, 470], source="data/images/picture1.png", size=[120,120]), Computer(pos=[620, 435], size=[130,130]), 
+                        Door(pos=[885, 180], size=[150, 300], scene=2, source="data/images/door1.png")]
+        self.movable_space = [[350,screen_size[0]-360],[100,300]]
         self.player = Player(ms=self.movable_space)
+        self.background = Background(source="data/images/pozadie1.png", size=self.screen_size)
 
     def update(self):
+        self.background.update()
+
         # MOVABLE SPACE VISIBLE
-        Color(1,0,0,1)
-        Rectangle(size=(self.movable_space[0][1]-self.movable_space[0][0], self.movable_space[1][1]-self.movable_space[1][0]), 
-                  pos=(self.movable_space[0][0], self.movable_space[1][0]))
-        Color(1,1,1,1)
+        # Color(1,0,0,1)
+        # Rectangle(size=(self.movable_space[0][1]-self.movable_space[0][0], self.movable_space[1][1]-self.movable_space[1][0]), 
+        #           pos=(self.movable_space[0][0], self.movable_space[1][0]))
+        # Color(1,1,1,1)
+        #=====================
 
         for i in self.objects:
             i.update()
