@@ -7,6 +7,7 @@ from .screens import GameScreen, MenuScreen
 
 # Change Window size
 Window.size = (1280, 750)
+SCREEN_SIZE = Window.size
 
 # Widnow Manaer
 class WindowManager(ScreenManager):

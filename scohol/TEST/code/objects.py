@@ -12,15 +12,15 @@ class Background:
         Rectangle(size=self.size, pos=self.pos, source=self.source)
 
 class Player:
-    def __init__(self, size=(100,100), pos=(0,0), ms=[[0,0],[0,0]]):
-        self.size = size
-        self.pos = pos
+    def __init__(self, size=(0.1,0.1), pos=(0,0), ms=[[0,0],[0,0]], screen_size=(0,0)):
+        self.size = [screen_size[0]*size[0], screen_size[1]*size[1]]
+        self.pos = [screen_size[0]*pos[0], screen_size[1]*pos[1]]
         self.movable_space = ms
         self.images = {
             "stand":[""],
             "walking":["", ""]
         }
-        self.walking = {"is":False, "dest":[0,0], "speed":3.5}
+        self.walking = {"is":False, "dest":[0,0], "speed":screen_size[0]/366}
         self.inventory = []
 
     def update(self):
@@ -57,9 +57,9 @@ class Player:
 
 # OBJECT <
 class Object:
-    def __init__(self, size=(100,100), pos=(0,0), source=""):
-        self.size = size
-        self.pos = pos
+    def __init__(self, size=(0.1,0.1), pos=(0,0), source="", screen_size=(0,0)):
+        self.size = [screen_size[0]*size[0], screen_size[1]*size[1]]
+        self.pos = [screen_size[0]*pos[0], screen_size[1]*pos[1]]
         self.source = source
 
     def update(self):
@@ -74,8 +74,8 @@ class Object:
         print(f"klikol si na {self}")
 
 class Door(Object):
-    def __init__(self, size=(100, 100), pos=(0, 0), source="", scene=0):
-        super().__init__(size=size, pos=pos, source=source)
+    def __init__(self, size=(0.1,0.1), pos=(0, 0), source="", scene=0, screen_size=[0,0]):
+        super().__init__(size=size, pos=pos, source=source, screen_size=screen_size)
         self.scene = scene
 
     def on_press(self):
@@ -84,16 +84,16 @@ class Door(Object):
             json.dump({"ac_scene":self.scene}, f, indent=2)
 
 class Picture(Object):
-    def __init__(self, size=(100, 100), pos=(0, 0), source=""):
-        super().__init__(size=size, pos=pos, source=source)
+    def __init__(self, size=(0.1,0.1), pos=(0,0), source="", screen_size=(0,0)):
+        super().__init__(size=size, pos=pos, source=source, screen_size=screen_size)
 
     def on_press(self):
         print("It's f*cking blue slide park man..., It's f*cking blue slide park...")
 
 class Computer(Object):
-    def __init__(self, size=(100, 100), pos=(0, 0)):
+    def __init__(self, size=(0.1,0.1), pos=(0,0), screen_size=(0,0)):
         self.source = f"data/images/pc{random.randint(0,2)}.png"
-        super().__init__(size=size, pos=pos, source=self.source)
+        super().__init__(size=size, pos=pos, source=self.source, screen_size=screen_size)
 
     def on_press(self):
         self.source = f"data/images/pc{random.randint(0,2)}.png"
