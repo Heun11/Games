@@ -1,6 +1,7 @@
 from kivy.graphics import Rectangle
-from kivy.core.audio import SoundLoader
 import random, json
+
+from .sounds import Sound
 
 class Background:
     def __init__(self, size=(100,100), pos=(0,0), source=""):
@@ -77,18 +78,22 @@ class Door(Object):
     def __init__(self, size=(0.1,0.1), pos=(0, 0), source="", scene=0, screen_size=[0,0]):
         super().__init__(size=size, pos=pos, source=source, screen_size=screen_size)
         self.scene = scene
+        self.sound = Sound(path="data/sounds/knock_knock.wav", loop=False, volume=0.6)
 
     def on_press(self):
         print("knock knock!")
-        with open("data/save.json", "w") as f:
-            json.dump({"ac_scene":self.scene}, f, indent=2)
+        self.sound.play()
+        # with open("data/save.json", "w") as f:
+        #     json.dump({"ac_scene":self.scene}, f, indent=2)
 
 class Picture(Object):
     def __init__(self, size=(0.1,0.1), pos=(0,0), source="", screen_size=(0,0)):
         super().__init__(size=size, pos=pos, source=source, screen_size=screen_size)
+        self.sound = Sound(path="data/sounds/blue_slide_park.wav", loop=False, volume=0.1)
 
     def on_press(self):
         print("It's f*cking blue slide park man..., It's f*cking blue slide park...")
+        self.sound.play()
 
 class Computer(Object):
     def __init__(self, size=(0.1,0.1), pos=(0,0), screen_size=(0,0)):
@@ -97,4 +102,12 @@ class Computer(Object):
 
     def on_press(self):
         self.source = f"data/images/pc{random.randint(0,2)}.png"
+
+class Switch(Object):
+    def __init__(self, size=(0.1, 0.1), pos=(0, 0), source="", screen_size=(0, 0)):
+        super().__init__(size=size, pos=pos, source=source, screen_size=screen_size)
+        self.state = False
+
+    def on_press(self):
+        print("debil")
 # OBJECT >
