@@ -6,7 +6,7 @@ from kivy.uix.screenmanager import ScreenManager
 from .screens import GameScreen, MenuScreen
 
 # Change Window size
-Window.size = (1280, 750)
+Window.size = (1080*0.5, 1920*0.5)
 
 # Widnow Manaer
 class WindowManager(ScreenManager):

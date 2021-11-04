@@ -1,55 +1,31 @@
 from kivy.graphics import Rectangle
-from kivy.core.audio import SoundLoader
-from .classes import Object
 
-SOUNDS = {
-    "music_box":SoundLoader.load("data/sounds/music_box.mp3")
-}
+class GamePad:
+    def __init__(self, screen_size=[0,0], size=[0.1,0.1], pos=[0.1,0.1], player=None):
+        self.source=""
+        self.size=[screen_size[0]*size[0], screen_size[1]*size[1]]
+        self.pos=[screen_size[0]*pos[0], screen_size[1]*pos[1]]
+        self.screen_size=screen_size
+        self.player=player
 
-def play_music(name):
-    for i in SOUNDS:
-        SOUNDS[i].stop()
-    SOUNDS[name].play()
+    def update(self):
+        Rectangle(source=self.source, pos=self.pos, size=self.size)
 
-class MusicBox(Object):
-    def __init__(self, size=(100, 100), pos=(0, 0), source=""):
-        super().__init__(size=size, pos=pos, source=source)
-    
-    def on_press(self):
-        super().on_press()
-        play_music("music_box")
-
-class MoveBox(Object):
-    def __init__(self, size=(100, 100), pos=(0, 0), source=""):
-        super().__init__(size=size, pos=pos, source=source)
-    
-    def on_press(self):
-        super().on_press()
-        self.pos = [self.pos[0]+20, self.pos[1]+10]
+    def on_touch(self, touch):
+        pos=touch.pos
+        if ((pos[0] > self.pos[0]) and (pos[0] < self.pos[0]+self.size[0]) and
+            (pos[1] > self.pos[1]) and (pos[1] < self.pos[1]+self.size[1])):
+            print("debil")
 
 class Player:
-    def __init__(self, size=(100,100), pos=(0,0), source="", movable_space={"x":[100,100], "y":[100,100]}):
-        self.size = size
-        self.pos = pos
-        self.source = source
-        self.movable_space = movable_space
+    def __init__(self, screen_size=[0,0], size=[0.1,0.1], pos=[0.1,0.1]):
+        self.source=""
+        self.size=[screen_size[0]*size[0], screen_size[1]*size[1]]
+        self.pos=[screen_size[0]*pos[0], screen_size[1]*pos[1]]
+        self.screen_size=screen_size
 
-    def draw(self):
-        Rectangle(size=self.size, pos=self.pos, source=self.source)
+    def update(self):
+        Rectangle(pos=self.pos, size=self.size, source=self.source)
 
-    def pressed(self, touch_pos):
-        if ((touch_pos[0] > self.pos[0]) and (touch_pos[0] < self.pos[0]+self.size[0]) and
-            (touch_pos[1] > self.pos[1]) and (touch_pos[1] < self.pos[1]+self.size[1])):
-            self.wiggle()
-        else:
-            if ((touch_pos[0] > self.movable_space["x"][0]) and (touch_pos[0] < self.movable_space["x"][1]) and
-            (touch_pos[1] > self.movable_space["y"][0]) and (touch_pos[1] < self.movable_space["y"][1])):
-                self.move(touch_pos)
-
-    def wiggle(self):
-        # play wiggle animation
-        print("wiggle")
-
-    def move(self, pos):
+    def move(self):
         pass
-            

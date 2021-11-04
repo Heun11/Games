@@ -5,7 +5,7 @@ from kivy.uix.label import Label
 from kivy.clock import Clock
 import json
 
-from .sceneloader import SceneLoader
+from .objects import Player, GamePad
 
 # Menu
 class MenuScreen(Screen):
@@ -20,10 +20,9 @@ class GameScreen(Screen):
         super().__init__(**kw)
         self.FPS = 60
         self.screen_size = Window.size
-        with open("data/save.json") as f:
-            self.ac_scene = json.load(f)["ac_scene"]
 
-        self.scene_loader = SceneLoader(self.screen_size)
+        self.player = Player(screen_size=self.screen_size)
+        self.game_pad = GamePad(pos=[0.3,0.1], size=[0.2,0.1], screen_size=self.screen_size)
 
     def on_enter(self, *args):
         super().on_enter(*args)
@@ -34,11 +33,12 @@ class GameScreen(Screen):
         self.clear_widgets()
         self.add_widget(Label(text=f"{int(1/dt)}", pos_hint={"y":0.9}, size_hint=(0.1,0.1)))
         with self.canvas:
-            self.scene_loader.update(self.ac_scene)
+            self.player.update()
+            self.game_pad.update()
 
     def on_touch_down(self, touch):
         super().on_touch_down(touch)
-        self.scene_loader.get_pressed(self.ac_scene, touch.pos)
+        self.game_pad.on_touch(touch=touch)
 
     def on_touch_move(self, touch):
         super().on_touch_move(touch)
