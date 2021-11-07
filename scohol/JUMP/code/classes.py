@@ -11,11 +11,17 @@ class Player:
         self.vel = 0
         self.gravity = -150
 
-    def move(self, touch_pos):
-        if touch_pos[0]>self.screen_size[0]*0.5:
-            self.pos[0]+=20
+        self.dir = None
+        self.speed=5
+
+    def t_down(self, pos):
+        if pos[0]>self.screen_size[0]*0.5:
+            self.dir="r"
         else:
-            self.pos[0]-=20
+            self.dir="l"
+
+    def t_up(self):
+        self.dir=None
 
     def update(self, dt, platforms):
         for p in platforms:
@@ -28,6 +34,11 @@ class Player:
 
         self.pos = [self.pos[0], self.pos[1]+dt*self.vel]
         self.vel +=dt*self.gravity
+
+        if self.dir=="l":
+            self.pos[0]-= self.speed
+        if self.dir=="r":
+            self.pos[0]+=self.speed
 
         if self.pos[0]>self.screen_size[0]-self.size:
             self.pos[0]=0

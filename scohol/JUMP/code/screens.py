@@ -23,7 +23,7 @@ class GameScreen(Screen):
 
         self.player = Player(screen_size=self.screen_size)
         self.platforms = [Platform(screen_size=self.screen_size, pos=[0.35,0.1]), 
-                        Platform(screen_size=self.screen_size, pos=[0.25,0.4])]
+                        Platform(screen_size=self.screen_size, pos=[0.25,0.3])]
 
     def on_enter(self, *args):
         super().on_enter(*args)
@@ -40,10 +40,11 @@ class GameScreen(Screen):
 
     def on_touch_down(self, touch):
         super().on_touch_down(touch)
-        self.player.move(touch_pos=touch.pos)
+        self.player.t_down(touch.pos)
 
     def on_touch_move(self, touch):
         super().on_touch_move(touch)
 
     def on_touch_up(self, touch):
         super().on_touch_up(touch)
+        self.player.t_up()
