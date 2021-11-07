@@ -5,7 +5,7 @@ from kivy.uix.label import Label
 from kivy.clock import Clock
 import json
 
-from .classes import Player, GamePad
+from .classes import *
 
 # Menu
 class MenuScreen(Screen):
@@ -22,7 +22,8 @@ class GameScreen(Screen):
         self.screen_size = Window.size
 
         self.player = Player(screen_size=self.screen_size)
-        self.game_pad = GamePad(screen_size=self.screen_size, player=self.player)
+        self.platforms = [Platform(screen_size=self.screen_size, pos=[0.35,0.1]), 
+                        Platform(screen_size=self.screen_size, pos=[0.25,0.4])]
 
     def on_enter(self, *args):
         super().on_enter(*args)
@@ -33,12 +34,13 @@ class GameScreen(Screen):
         self.clear_widgets()
         self.add_widget(Label(text=f"{int(1/dt)}", pos_hint={"y":0.9}, size_hint=(0.1,0.1)))
         with self.canvas:
-            self.player.update()
-            self.game_pad.update()
+            self.player.update(dt, self.platforms)
+            for platform in self.platforms:
+                platform.update()
 
     def on_touch_down(self, touch):
         super().on_touch_down(touch)
-        self.game_pad.on_touch(touch=touch)
+        self.player.move(touch_pos=touch.pos)
 
     def on_touch_move(self, touch):
         super().on_touch_move(touch)
