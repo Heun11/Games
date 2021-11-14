@@ -3,8 +3,8 @@ import pygame.freetype
 from random import randint
 p.init()
 
-Font = p.freetype.Font("TRASH/tictactoe/assets/font.ttf", 205)
-Over_Font = p.freetype.Font("TRASH/tictactoe/assets/font.ttf", 50)
+Font = p.freetype.Font("assets/font.ttf", 205)
+Over_Font = p.freetype.Font("assets/font.ttf", 50)
 
 class Board:
     def __init__(self):
@@ -103,6 +103,8 @@ class Board:
 
         self.logic(1, 1)
         self.check()
+
+        print(self.board)
 
     def draw(self,sur):
 

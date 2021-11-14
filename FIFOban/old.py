@@ -5,9 +5,8 @@ from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.graphics import Rectangle
 from kivy.core.window import Window
 from kivy.clock import Clock
+from kivy.properties import ObjectProperty
 from kivy.core.audio import SoundLoader
-from kivy.uix.button import Button
-from functools import partial
 
 import json
 
@@ -20,40 +19,6 @@ def load_level(index):
         return levels[str(index)]
     except Exception as e:
         print("error loading levels", e)
-
-class GamePad:
-    def __init__(self, screen_size, player):
-        self.source="data/images/gamepad.png"
-        self.size=screen_size[0]*0.3
-        self.pos=[screen_size[0]*0.35, screen_size[1]*0.2]
-        self.player=player
-
-    def update(self):
-        Rectangle(source=self.source, pos=self.pos, size=[self.size, self.size])
-
-    def on_touch(self, touch):
-        pos=touch.pos
-        size_of_btn=self.size/3
-
-        if ((pos[0] > self.pos[0]+size_of_btn) and (pos[0] < self.pos[0]+size_of_btn*2) and
-            (pos[1] > self.pos[1]+size_of_btn*2) and (pos[1] < self.pos[1]+self.size)):
-            print("up")
-            self.player.move(0)
-
-        if ((pos[0] > self.pos[0]+size_of_btn) and (pos[0] < self.pos[0]+size_of_btn*2) and
-            (pos[1] > self.pos[1]) and (pos[1] < self.pos[1]+size_of_btn)):
-            print("down")
-            self.player.move(1)
-
-        if ((pos[0] > self.pos[0]+size_of_btn*2) and (pos[0] < self.pos[0]+self.size) and
-            (pos[1] > self.pos[1]+size_of_btn) and (pos[1] < self.pos[1]+size_of_btn*2)):
-            print("right")
-            self.player.move(2)
-
-        if ((pos[0] > self.pos[0]) and (pos[0] < self.pos[0]+size_of_btn) and
-            (pos[1] > self.pos[1]+size_of_btn) and (pos[1] < self.pos[1]+size_of_btn*2)):
-            print("left")
-            self.player.move(3)
 
 class tile:
     def __init__(self, pos=(1, 1), size=(50, 50), image=""):
@@ -70,26 +35,49 @@ class tile:
 class GameWindow(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+
+        FPS = 30
+
+        self.update_all = False
+
         self.level_id = 0
         self.level = load_level(self.level_id)
         self.level["map"].reverse()
         self.blocks = {"g":0, "p":7, "w":4, "b":2, "c":9, "e":3}
         self.rects = [[0 for i in range(self.level["size"][1])] for j in range(self.level["size"][0])]
 
-        Clock.schedule_interval(self.update,1/60)
+        with self.canvas:
+            self.draw()
+
+        Clock.schedule_interval(self.update,1/FPS)
+
+    def draw(self):
+        for i in range(self.level["size"][0]):
+            for j in range(self.level["size"][1]):
+
+                if self.level["map"][i][j] == self.blocks["g"]:
+                    t = "g"
+                elif self.level["map"][i][j] == self.blocks["p"]:
+                    t = "p"
+                elif self.level["map"][i][j] == self.blocks["w"]:
+                    t = "w"
+                elif self.level["map"][i][j] == self.blocks["b"]:
+                    t = "b"
+                elif self.level["map"][i][j] == self.blocks["c"]:
+                    t = "c"
+                elif self.level["map"][i][j] == self.blocks["e"]:
+                    t = "e"
+
+                self.rects[i][j] = tile(pos=(i,j), size=(40, 40), image=t)
+
+        for i in range(self.level["size"][0]):
+            for j in range(self.level["size"][1]):
+                self.rects[i][j].draw()
 
 
     def update(self, dt):
-        self.clear_widgets()
-        self.canvas.clear()
-        
-        self.add_widget(Button(text="a", pos_hint={"x":0.2, "y":0.15}, size_hint=(0.2,0.1), on_press=partial(self.move, "a", -1, 0)))
-        self.add_widget(Button(text="d", pos_hint={"x":0.6, "y":0.15}, size_hint=(0.2,0.1), on_press=partial(self.move, "d", 1, 0)))
-        self.add_widget(Button(text="w", pos_hint={"x":0.4, "y":0.25}, size_hint=(0.2,0.1), on_press=partial(self.move, "w", 0, 1)))
-        self.add_widget(Button(text="s", pos_hint={"x":0.4, "y":0.05}, size_hint=(0.2,0.1), on_press=partial(self.move, "s", 0, -1)))
-
         print(1/dt)
-        with self.canvas:
+        if self.update_all:
             for i in range(self.level["size"][0]):
                 for j in range(self.level["size"][1]):
 
@@ -106,11 +94,8 @@ class GameWindow(Screen):
                     elif self.level["map"][i][j] == self.blocks["e"]:
                         t = "e"
 
-                    self.rects[i][j] = tile(pos=(i,j), size=(40, 40), image=t)
-
-            for i in range(self.level["size"][0]):
-                for j in range(self.level["size"][1]):
-                    self.rects[i][j].draw()
+                    self.rects[i][j].update(t)
+            self.update_all = False
 
     def check(self):
         pass   
@@ -139,7 +124,7 @@ class GameWindow(Screen):
             else:
                 level[box_place[0]][box_place[1]] = self.blocks["c"]
 
-    def move(self, dr, x, y, *a):
+    def move(self, dr, x, y):
         obj = self.get_obj(x, y)
 
         if obj == self.blocks["g"] or obj == self.blocks["c"]:
