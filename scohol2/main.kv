@@ -1,0 +1,48 @@
+##:kivy
+
+<Label>:
+    background_color: (0,0,1,0.5)
+    size_hint: 0.3,0.1
+    font_size: 25
+    color: (1,1,1,1)
+    # canvas.before:
+    #     Color:
+    #         rgba: self.background_color
+    #     Rectangle:
+    #         size: self.size
+    #         pos: self.pos
+
+<Button>:
+    size_hint: 0.3,0.1
+    font_size: 25
+    background_color: (0.5,0,0,0.1)
+
+<TextInput>:
+    background_color: (.2,.2,.2,1)
+    size_hint: 0.55,0.05
+    font_size: 20
+    foreground_color:(1,1,1,1)
+    multiline:False
+
+WindowManager:
+    MenuScreen:
+    GameScreen:
+
+<MenuScreen>:
+	name: 'menu'
+
+    Label:
+        text:"Main Menu"
+        pos_hint: {"x":0.35, "y":0.75}
+        font_size: 80
+
+    Button:
+        text:"play"
+        pos_hint: {"x":0.35, "y":0.3}
+        font_size: 80
+        on_press:
+            app.root.current = "game"
+            root.manager.transition.direction="up"
+
+<GameScreen>:
+    name: "game"

@@ -3,8 +3,9 @@ from kivy.graphics import Rectangle
 from kivy.core.window import Window
 from kivy.uix.label import Label
 from kivy.clock import Clock
+import time
 
-from .classes import Game, save_high_score, load_high_score
+from .classes import Game
 
 # Menu
 class MenuScreen(Screen):
@@ -31,25 +32,11 @@ class GameScreen(Screen):
         self.canvas.clear()
         self.clear_widgets()
         with self.canvas:
-            if not self.game.end:
-                self.game.update()
-                self.score.text=f"{self.game.score_counter.get_score()}"
-                self.add_widget(self.score)
-            elif self.game.end:
-                Rectangle(size=self.screen_size, source="data/images/death_bck.png")
-                self.dead_text.text=f"you lost, your score is {self.game.score_counter.get_score()}\nclick anywhere on screen to restart\n\nHigh score is {load_high_score()}"
-                self.add_widget(self.dead_text)
-                save_high_score(self.game.score_counter.get_score())
-        self.add_widget(Label(text=f"{int(1/dt)}", pos_hint={"y":0.9}, size_hint=(0.1,0.1)))
+            self.game.update(dt)
 
     def on_touch_down(self, touch):
         super().on_touch_down(touch)
         self.game.on_touch_down(touch)
-        if self.game.end:
-            self.game=Game(sc=self.screen_size)
-
-    def on_touch_move(self, touch):
-        super().on_touch_move(touch)
 
     def on_touch_up(self, touch):
         super().on_touch_up(touch)
