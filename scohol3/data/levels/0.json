@@ -1,0 +1,19 @@
+{
+    "tiles":{"1":"data/images/grass.png", "2":"data/images/water.png", "3":"data/images/test.png"},
+    "objects":{"1":"data/images/tree.png"},
+    "map_floor_0":[
+        [2,2,0,0],
+        [2,1,1,1],
+        [1,1,1,1],
+        [1,1,3,0]
+    ],
+
+    "map_floor_1":[
+        [0,0,0,0],
+        [0,0,1,1],
+        [0,0,0,1],
+        [0,0,0,0]
+    ],
+
+    "player":{"pos":[2,1]}
+}
