@@ -1,4 +1,4 @@
-Sokoban for filip
+Sokoban
 
 to do: (✔️)
     - create terminal version (✔️)
@@ -6,9 +6,12 @@ to do: (✔️)
     - create basic game (✔️)
     - create restart system (✔️)
     - create level editor (✔️)
-    - create level system
-    - calculate distance and size of sprites from Window.size 
+    - recreate gameplay (✔️)
+    - create level system (✔️)
+    - calculate distance and size of sprites from screen size (✔️)
+    - update level system
     - images
     - sounds
     - fix bugs
     - add new levels
+    - oprimize

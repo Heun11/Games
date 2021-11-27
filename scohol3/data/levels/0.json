@@ -1,6 +1,6 @@
 {
     "tiles":{"1":"data/images/grass.png", "2":"data/images/water.png", "3":"data/images/test.png"},
-    "objects":{"1":"data/images/tree.png"},
+    "objects":{"1":"data/images/tree.png", "box":"data/images/box.png"},
     "map_floor_0":[
         [2,2,0,0],
         [2,1,1,1],
