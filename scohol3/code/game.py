@@ -38,6 +38,11 @@ class GameScreen(Screen):
         self.canvas.clear()
         self.clear_widgets()
         with self.canvas:
+            # Background image
+            Color(1,1,1,0.3)
+            Rectangle(size=self.sc, source=self.level["background"])
+            Color(1,1,1,1)
+
             for i in range(len(self.level["map_floor_0"])-1,-1,-1):
                 for j in range(len(self.level["map_floor_0"][i])-1,-1,-1):
                     tile = self.level["map_floor_0"][i][j]
@@ -45,8 +50,8 @@ class GameScreen(Screen):
                         Rectangle(pos=[self.tile_offset[0]+(i-j)*self.tile_size[0]*0.5, self.tile_offset[1]+(i+j)*self.tile_size[1]*0.5], 
                                     size=self.tile_size, source=self.level["tiles"][str(tile)])
 
-            for i in range(len(self.level["map_floor_0"])-1,-1,-1):
-                for j in range(len(self.level["map_floor_0"][i])-1,-1,-1):
+            for i in range(len(self.level["map_floor_1"])-1,-1,-1):
+                for j in range(len(self.level["map_floor_1"][i])-1,-1,-1):
                     obj = self.level["map_floor_1"][i][j]
                     if obj!=0:
                         Rectangle(pos=[(self.tile_offset[0]+(i-j)*self.tile_size[0]*0.5)+self.tile_size[0]*0.5-self.object_size[0]*0.5, 
@@ -55,6 +60,8 @@ class GameScreen(Screen):
 
         print(int(1/dt))
 
+    def move(self):
+        pass
 
     def on_touch_down(self, touch):
         super().on_touch_down(touch)

@@ -9,7 +9,8 @@ to do: (✔️)
     - recreate gameplay (✔️)
     - create level system (✔️)
     - calculate distance and size of sprites from screen size (✔️)
-    - update level system
+    - update level system (✔️)
+    - update size scaling (✔️)
     - images
     - sounds
     - fix bugs

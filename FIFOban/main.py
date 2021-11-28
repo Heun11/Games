@@ -45,15 +45,13 @@ def save_data(index, max_):
     except Exception as e:
         print("error saving data", e) 
 
-
 level_index = 0
-
 
 class GamePad:
     def __init__(self, sc, par=None):
         self.source="data/images/gamepad.png"
-        self.size=sc[0]*0.45
-        self.pos=[sc[0]*0.275, sc[1]*0.1]
+        self.size=sc[0]*0.5
+        self.pos=[sc[0]*0.25, sc[1]*0.1]
         self.par=par
 
     def update(self):
@@ -90,15 +88,6 @@ class GameWindow(Screen):
         self.level["map"].reverse()
 
         self.blocks = {"g":0, "p":7, "w":4, "b":2, "c":9, "e":3}
-        self.tile_size = [
-            self.sc[0]*(1/(self.level["size"][1]+2)),
-            self.sc[0]*(1/(self.level["size"][1]+2))
-        ]
-        self.tile_offset = [
-            self.tile_size[0],
-            self.sc[1]-(self.tile_size[0]*(self.level["size"][0]+1))
-        ]
-
         self.gp = GamePad(sc=self.sc, par=self)
 
         self.button = {"pos":(0, self.sc[1]*0.95), "size":(self.sc[0]*0.1, self.sc[1]*0.05), "source":"data/images/button.png"}
@@ -151,7 +140,7 @@ class GameWindow(Screen):
                         save_data(self.level_id, self.max_level)
                         self.set_level()
                     else:
-                        self.level_id=0
+                        self.menu()
 
     def check(self):
         box_right_count = 0
@@ -175,7 +164,7 @@ class GameWindow(Screen):
         ]
         self.tile_offset = [
             self.tile_size[0],
-            self.sc[1]-(self.tile_size[0]*(self.level["size"][0]+1))
+            self.sc[1]*0.4+((self.sc[1]*0.6)*0.5)-(self.level["size"][0]*self.tile_size[1])*0.5
         ]
 
     def get_obj(self, x, y):

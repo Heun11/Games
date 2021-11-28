@@ -1,0 +1,15 @@
+to do: (✔️)
+    - create basic app (✔️)
+    - create basic game (✔️)
+    - create gameplay
+    - create restart system 
+    - create level editor 
+    - create level system 
+    - calculate distance and size of sprites from screen size 
+    - update level system 
+    - update size scaling 
+    - images
+    - sounds
+    - fix bugs
+    - add new levels
+    - oprimize

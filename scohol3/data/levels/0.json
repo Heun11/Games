@@ -1,19 +1,21 @@
 {
     "tiles":{"1":"data/images/grass.png", "2":"data/images/water.png", "3":"data/images/test.png"},
-    "objects":{"1":"data/images/tree.png", "box":"data/images/box.png"},
+    "objects":{"1":"data/images/tree.png", "2":"data/images/box.png"},
+    "background":"data/images/bck_0.png",
+
     "map_floor_0":[
-        [2,2,0,0],
         [2,1,1,1],
-        [1,1,1,1],
-        [1,1,3,0]
+        [2,2,1,1],
+        [2,2,1,1],
+        [1,2,1,1]
     ],
 
     "map_floor_1":[
-        [0,0,0,0],
         [0,0,1,1],
+        [0,0,0,1],
         [0,0,0,1],
         [0,0,0,0]
     ],
 
-    "player":{"pos":[2,1]}
+    "player":{"pos":[2,1], "source":"data/images/player_basic.png"}
 }
