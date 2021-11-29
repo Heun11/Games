@@ -10,9 +10,9 @@ r = 3
 level = [
     [p,g,g,g,g,g],
     [r,g,g,g,g,g],
-    [r,r,r,g,w,g],
-    [g,g,g,g,w,g],
-    [g,g,g,g,w,g],
+    [r,r,r,r,w,g],
+    [g,g,r,r,w,g],
+    [g,g,r,r,w,g],
     [g,g,g,g,g,g]
 ]
 
