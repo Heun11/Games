@@ -1,45 +1,49 @@
-import os
-
-pl_pos = [0, 0]
-
-g = 0
-p = 1
-w = 2
-r = 3
-
-level = [
-    [p,g,g,g,g,g],
-    [r,g,g,g,g,g],
-    [r,r,r,r,w,g],
-    [g,g,r,r,w,g],
-    [g,g,r,r,w,g],
-    [g,g,g,g,g,g]
+f_0 = [
+    [1,0,0,0,0],
+    [1,0,0,1,0],
+    [1,1,0,1,0],
+    [0,1,1,1,0],
+    [0,1,0,0,0]
 ]
 
-def print_level(level):
+f_1 = [
+    ["P",0,0,0,0],
+    [0,0,0,0,0],
+    [0,0,0,"M1",0],
+    [0,0,0,0,0],
+    [0,0,0,0,0]
+]
+
+pl_pos = [0,0]
+m = [[2, 3]]
+
+def print_level(f_0, f_1):
     print()
-    for i in range(len(level)):
-        for j in range(len(level[i])):
-            print(f"{level[i][j]} ", end="")
+    for i in range(len(f_0)):
+        for j in range(len(f_0[i])):
+            print(f"{f_0[i][j]}", end=" ")
+
+        print(f"|", end=" ")
+
+        for k in range(len(f_1[i])):
+            print(f"{f_1[i][k]}", end=" ")
+
         print()
 
 def get_obj(x, y):
-    obj = level[pl_pos[0]+y][pl_pos[1]+x]
-    return obj
+    return f_1[y][x]
 
 def move_player(x, y):
-    global pl_pos, level
-    level[pl_pos[0]][pl_pos[1]] = r
-    level[pl_pos[0]+y][pl_pos[1]+x] = p
-    pl_pos = [pl_pos[0]+y, pl_pos[1]+x]
+    pass
+
+def move_enemies():
+    pass
 
 def move(x, y):
-    obj = get_obj(x, y)
-    if obj == r:
-        move_player(x, y)
+    move_enemies()
 
 while True:
-    print_level(level)
+    print_level(f_0,f_1)
     d = input(">> ")
     if d=="a":
         move(-1,0)
@@ -52,6 +56,3 @@ while True:
     
     elif d=="s":
         move(0,1)
-
-    else:
-        print("WRONG KEY, USE a,w,s,d TO MOVE")

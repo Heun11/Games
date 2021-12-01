@@ -1,7 +1,8 @@
 to do: (✔️)
     - create basic app (✔️)
     - create basic game (✔️)
-    - create gameplay
+    - create gameplay (in terminal)
+    - apply gameplay to app, add controls
     - create restart system 
     - create level editor 
     - create level system 
