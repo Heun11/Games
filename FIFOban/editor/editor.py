@@ -22,6 +22,17 @@ def print_level(level):
             print(f"{level[i][j]}", end=" ")
         print()
 
+class Tile:
+    def __init__(self, size, pos):
+        self.size = size
+        self.pos = pos
+
+    def draw(self):
+        self.r = Rectangle(size=[self.size, self.size], pos=self.pos, source="")
+
+    def update(self, block):
+        self.r.source=f"images/{block}.png"
+
 class EditorWindow(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -44,42 +55,52 @@ class EditorWindow(Screen):
             {"pos":[self.sc[0]*0.92, self.sc[1]*0.4], "size":[self.sc[1]*0.08, self.sc[1]*0.08], "source":"images/g.png", "block":"g"}
         ]
 
-        self.last_updated_cell = [0,0]
-        self.update_bool = False
-        Clock.schedule_interval(self.update,1/30)
-
     def on_enter(self, *args):
         super().on_enter(*args)
         self.level = [[6 for i in range(level["level_width"])] for j in range(level["level_height"])]
         self.block_size = self.sc[1]*(1/(level["level_height"]+6))
         self.level_offset = [self.block_size*2,self.block_size*2]
-        self.update_bool=True
+        self.tiles = [[Tile(self.block_size, [self.level_offset[0]+((self.block_size+1)*j), self.level_offset[1]+((self.block_size+1)*i)]) for i in range(level["level_width"])] for j in range(level["level_height"])]
+        self.draw()
         
+    def draw(self):
+        self.canvas.clear()
+        with self.canvas:
+            for i in range(len(self.level)):
+                for j in range(len(self.level[i])):
+                    self.tiles[i][j].draw()
 
-    def update(self, dt):
-        if self.update_bool:
-            self.canvas.clear()
-            with self.canvas:
-                for i in range(len(self.level)):
-                    for j in range(len(self.level[i])):
-                        size = [self.block_size, self.block_size]
-                        pos = [self.level_offset[0]+((self.block_size+1)*j), self.level_offset[1]+((self.block_size+1)*i)]
-                        source = f"images/{self.blocks[self.level[i][j]]}.png"
-                        Rectangle(pos=pos, size=size, source=source)
+            Color(1,1,1,0.1)
+            Rectangle(pos=[self.save_button["pos"][0]-20, 0], size=[self.sc[0]-self.save_button["pos"][0]+20, self.sc[1]])
+            Color(1,1,1,1)
 
-                Color(1,1,1,0.1)
-                Rectangle(pos=[self.save_button["pos"][0]-20, 0], size=[self.sc[0]-self.save_button["pos"][0]+20, self.sc[1]])
-                Color(1,1,1,1)
+            Rectangle(pos=self.save_button["pos"], size=self.save_button["size"], source=self.save_button["source"])
 
-                Rectangle(pos=self.save_button["pos"], size=self.save_button["size"], source=self.save_button["source"])
-
-                for btn in self.block_buttons:
-                    Rectangle(pos=btn["pos"], size=btn["size"], source=btn["source"])
-
-            self.update_bool=False
+            for btn in self.block_buttons:
+                Rectangle(pos=btn["pos"], size=btn["size"], source=btn["source"])
 
     def save_level(self):
         print("saving...")
+
+        b_pos=[]
+        nm = level["level_name"]
+        for i in range(level["level_height"]):
+                for j in range(level["level_width"]):
+                    if self.level[i][j] == self.blocks["p"]:
+                        p_pos = [i, j]
+                    elif self.level[i][j] == self.blocks["c"]:
+                        b_pos.append([i, j])
+
+        with open(f"levels/{nm}.json", "w") as f:
+            self.level.reverse()
+            data = {
+                "size":[level["level_height"], level["level_width"]],
+                "map":self.level,
+                "player_pos": p_pos,
+                "box_places": b_pos 
+            }
+            json.dump(data, f, indent=2)
+            self.level.reverse()
 
     def on_touch_down(self, touch):
         super().on_touch_down(touch)
@@ -98,9 +119,9 @@ class EditorWindow(Screen):
         touch.pos[1]>self.level_offset[1] and touch.pos[1]<self.level_offset[1]+(self.block_size*len(self.level)+len(self.level))):
             pos = [touch.pos[0]-self.level_offset[0], touch.pos[1]-self.level_offset[1]]
             j, i = math.floor(pos[0]/(self.block_size+1)), math.floor(pos[1]/(self.block_size+1))
-            print(i,j)
             self.level[i][j] = self.blocks[self.actual_block]
-        
+            self.tiles[j][i].update(self.actual_block)
+
 
 class MenuWindow(Screen):
     level_width = ObjectProperty(None)

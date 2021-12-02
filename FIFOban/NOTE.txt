@@ -11,6 +11,7 @@ to do: (✔️)
     - calculate distance and size of sprites from screen size (✔️)
     - update level system (✔️)
     - update size scaling (✔️)
+    - upgrade level editor (✔️)
     - images
     - sounds
     - fix bugs

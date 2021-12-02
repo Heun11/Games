@@ -9,6 +9,80 @@ from kivy.clock import Clock
 from kivy.uix.button import Button
 import json, math
 
+kv = """
+WindowManager:
+    MenuWindow:
+    EditorWindow:
+
+<Label>:
+    background_color: (1,0,0,.5)
+    size_hint: 0.3,0.1
+    font_size: 40
+    color: (0.8,0.8,0.8,1)
+    canvas.before:
+        Color:
+            rgba: self.background_color
+        Rectangle:
+            size: self.size
+            pos: self.pos
+
+<Button>:
+    size_hint: 0.3,0.1
+    font_size: 40
+    background_color: (1,1,1,0.01)
+    background_color: (0.5,0,0,1)
+
+<TextInput>:
+    background_color: (.2,.2,.2,1)
+    size_hint: 0.3,0.1
+    font_size: 40
+    foreground_color:(1,1,1,1)
+    multiline:False
+
+<MenuWindow>:
+    name: "menu"
+
+    level_width:level_width
+    level_height:level_height
+    level_name:level_name
+
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 0.05
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    Label:
+        text: "Add parameters:"
+        size_hint: 0.3, 0.1
+        pos_hint: {"y":0.8, "x":0.35}
+
+    TextInput:
+        id: level_name
+        hint_text: "name of level"
+        pos_hint: {"y":0.6, "x":0.35}
+    
+    TextInput:
+        id: level_width  
+        hint_text: "width of level"
+        pos_hint: {"y":0.5, "x":0.35}
+    
+    TextInput:
+        id: level_height
+        hint_text: "height of level"
+        pos_hint: {"y":0.4, "x":0.35}
+
+    Button:
+        text: "submit"
+        pos_hint: {"y":0.2, "x":0.35}
+        on_press:
+            root.start_editor()
+
+<EditorWindow>:
+    name: "editor"    
+"""
+
 level = {
     "level_width":None,
     "level_height":None,
@@ -82,6 +156,26 @@ class EditorWindow(Screen):
     def save_level(self):
         print("saving...")
 
+        b_pos=[]
+        nm = level["level_name"]
+        for i in range(level["level_height"]):
+                for j in range(level["level_width"]):
+                    if self.level[i][j] == self.blocks["p"]:
+                        p_pos = [i, j]
+                    elif self.level[i][j] == self.blocks["c"]:
+                        b_pos.append([i, j])
+
+        with open(f"data/{nm}.json", "w") as f:
+            self.level.reverse()
+            data = {
+                "size":[level["level_height"], level["level_width"]],
+                "map":self.level,
+                "player_pos": p_pos,
+                "box_places": b_pos 
+            }
+            json.dump(data, f, indent=2)
+            self.level.reverse()
+
     def on_touch_down(self, touch):
         super().on_touch_down(touch)
         self.update_bool=True
@@ -128,11 +222,10 @@ class WindowManager(ScreenManager):
     pass
 
 Window.size = (1100, 800)
-kv = Builder.load_file("editor.kv")
 
 class EditorApp(App):
     def build(self):
-        return kv
+        return Builder.load_string(kv)
 
 if __name__ == "__main__":
     EditorApp().run()
