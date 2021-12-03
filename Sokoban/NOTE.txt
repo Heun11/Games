@@ -12,8 +12,8 @@ to do: (✔️)
     - update level system (✔️)
     - update size scaling (✔️)
     - upgrade level editor (✔️)
-    - images
+    - images (✔️)
     - sounds
-    - fix bugs
     - add new levels
+    - fix bugs
     - oprimize

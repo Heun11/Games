@@ -21,10 +21,16 @@ WindowManager:
     size_hint: 0.2,0.1
     font_size: 40
     # background_color: (1,1,1,0.01)
-    background_color: (0,0,1,1)
+    background_color: (0,1,0,1)
 
 <MenuWindow>:
     name: "menu"
+
+    canvas.before:
+        Rectangle:
+            size: self.size
+            pos: self.pos
+            source: "data/images/debili/background.png"
 
     Label:
         text:"FIFOban"
@@ -32,7 +38,7 @@ WindowManager:
 
     Button:
         text:"PLAY"
-        pos_hint: {"x":0.4, "y":0.3}
+        pos_hint: {"x":0.4, "y":0.25}
         on_press:
             app.root.current = "level"
             root.manager.transition.direction="left"
@@ -40,6 +46,12 @@ WindowManager:
 <LevelWindow>:
     name:"level"
     levels_layout:levels_layout
+
+    canvas.before:
+        Rectangle:
+            size: self.size
+            pos: self.pos
+            source: "data/images/debili/background2.png"
 
     Label:
         text:"Levels:"
@@ -51,17 +63,15 @@ WindowManager:
         size_hint:0.8,0.6
         pos_hint:{"x":0.1, "y":0.1}
 
-        # Button:
-        #     text:"level 99"
-        #     on_press:
-        #         app.root.current = "game"
-        #         root.manager.transition.direction="up"
-
-        #     canvas.before:
-        #         Rectangle:
-        #             size: self.size
-        #             pos: self.pos
-        #             source: "data/images/unlocked.png"
-
 <GameWindow>:
     name:"game"
+
+    canvas.before:
+        Color:
+            rgba: (0.5,0.5,0.5,1)
+        Rectangle:
+            size: self.size
+            pos: self.pos
+            source: "data/images/debili/background2.png"
+        Color:
+            rgba: (1,1,1,1)

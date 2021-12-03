@@ -114,22 +114,24 @@ class GameWindow(Screen):
             with self.canvas:
                 for i in range(self.level["size"][0]):
                     for j in range(self.level["size"][1]):
+                        if self.level["map"][i][j] != self.blocks["e"]:
 
-                        if self.level["map"][i][j] == self.blocks["g"]:
-                            t = "g"
-                        elif self.level["map"][i][j] == self.blocks["p"]:
-                            t = "p"
-                        elif self.level["map"][i][j] == self.blocks["w"]:
-                            t = "w"
-                        elif self.level["map"][i][j] == self.blocks["b"]:
-                            t = "b"
-                        elif self.level["map"][i][j] == self.blocks["c"]:
-                            t = "c"
-                        elif self.level["map"][i][j] == self.blocks["e"]:
-                            t = "e"
+                            if self.level["map"][i][j] == self.blocks["g"]:
+                                t = "g"
+                            elif self.level["map"][i][j] == self.blocks["p"]:
+                                t = "p"
+                            elif self.level["map"][i][j] == self.blocks["w"]:
+                                t = "w"
+                            elif self.level["map"][i][j] == self.blocks["b"]:
+                                t = "b"
+                            elif self.level["map"][i][j] == self.blocks["c"]:
+                                t = "c"
 
-                        Rectangle(source=f"data/images/{t}.png", size=self.tile_size, 
-                                    pos=[self.tile_offset[0]+self.tile_size[0]*j, self.tile_offset[1]+self.tile_size[1]*i])
+                            # source = f"data/images/{t}.png"
+                            source = f"data/images/debili/{t}.png"
+
+                            Rectangle(source=source, size=self.tile_size, 
+                                        pos=[self.tile_offset[0]+self.tile_size[0]*j, self.tile_offset[1]+self.tile_size[1]*i])
 
                 Rectangle(pos=self.button["pos"], size=self.button["size"], source=self.button["source"])
                 self.gp.update()
@@ -137,8 +139,9 @@ class GameWindow(Screen):
                 if self.check():
                     if self.level_id<self.max_level:
                         self.level_id+=1
-                        save_data(self.level_id, self.max_level)
                         self.set_level()
+                        if get_save_data()[0]<self.max_level:
+                            save_data(self.level_id, self.max_level)
                     else:
                         self.menu()
 
