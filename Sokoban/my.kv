@@ -40,6 +40,7 @@ WindowManager:
         text:"PLAY"
         pos_hint: {"x":0.4, "y":0.25}
         on_press:
+            root.play_music()
             app.root.current = "level"
             root.manager.transition.direction="left"
 

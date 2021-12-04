@@ -13,7 +13,7 @@ to do: (✔️)
     - update size scaling (✔️)
     - upgrade level editor (✔️)
     - images (✔️)
-    - sounds
+    - sounds (✔️)
     - add new levels
     - fix bugs
     - oprimize

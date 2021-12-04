@@ -46,6 +46,12 @@ def save_data(index, max_):
         print("error saving data", e) 
 
 level_index = 0
+SOUNDS = {
+    "btn":SoundLoader.load("data/sounds/debili/btn.wav"),
+    "restart":SoundLoader.load("data/sounds/debili/restart.wav"),
+    "win":SoundLoader.load("data/sounds/debili/win.wav"),
+    "step":SoundLoader.load("data/sounds/debili/step.wav")
+}
 
 class GamePad:
     def __init__(self, sc, par=None):
@@ -137,10 +143,11 @@ class GameWindow(Screen):
                 self.gp.update()
 
                 if self.check():
+                    SOUNDS["win"].play()
                     if self.level_id<self.max_level:
                         self.level_id+=1
                         self.set_level()
-                        if get_save_data()[0]<self.max_level:
+                        if get_save_data()[0]<self.max_level and self.level_id>get_save_data()[0]:
                             save_data(self.level_id, self.max_level)
                     else:
                         self.menu()
@@ -186,6 +193,8 @@ class GameWindow(Screen):
         level[pl_pos[0]+y][pl_pos[1]+x] = self.blocks["p"]
         self.level["player_pos"] = [pl_pos[0]+y, pl_pos[1]+x]
 
+        SOUNDS["step"].play()
+
         for box_place in box_places:
             if (level[box_place[0]][box_place[1]] == self.blocks["b"]) or (level[box_place[0]][box_place[1]] == self.blocks["p"]):
                 pass
@@ -220,12 +229,14 @@ class GameWindow(Screen):
         self.button_menu.dismiss()
         self.level = load_level(self.level_id)
         self.level["map"].reverse()
+        SOUNDS["btn"].play()
 
     def menu(self, *a):
         self.button_menu.dismiss()
         self.parent.current = "menu"
         self.update_all=False
         self.restart()
+        SOUNDS["btn"].play()
 
     def on_touch_down(self, touch):
         super().on_touch_down(touch)
@@ -234,6 +245,7 @@ class GameWindow(Screen):
         if ((touch.pos[0]>self.button["pos"][0] and touch.pos[0]<self.button["pos"][0]+self.button["size"][0]) and
         (touch.pos[1]>self.button["pos"][1] and touch.pos[1]<self.button["pos"][1]+self.button["size"][1])):
             self.button_menu.open()
+            SOUNDS["btn"].play()
 
 class LevelWindow(Screen):
     levels_layout = ObjectProperty(None)
@@ -249,7 +261,7 @@ class LevelWindow(Screen):
                 l = "Locked"
             else:
                 l = "Unlocked"
-            self.levels_layout.add_widget(Button(text=f"Level {level_index}\n{l}", on_press=partial(self.play_level, level_index, l)))
+            self.levels_layout.add_widget(Button(text=f"Level:{level_index}\n{l}", on_press=partial(self.play_level, level_index, l)))
 
     def play_level(self, li, l, *a):
         if l == "Unlocked":
@@ -257,8 +269,17 @@ class LevelWindow(Screen):
             self.parent.current="game"
             level_index=li
 
+            self.play_music()
+    
+    def play_music(self):
+        SOUNDS["btn"].play()
+
 class MenuWindow(Screen):
-    pass
+    def __init__(self, **kw):
+        super().__init__(**kw)
+
+    def play_music(self):
+        SOUNDS["btn"].play()
 
 class WindowManager(ScreenManager):
     pass
