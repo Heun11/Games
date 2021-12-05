@@ -60,7 +60,7 @@ class EditorWindow(Screen):
         self.level = [[6 for i in range(level["level_width"])] for j in range(level["level_height"])]
         self.block_size = self.sc[1]*(1/(level["level_height"]+6))
         self.level_offset = [self.block_size*2,self.block_size*2]
-        self.tiles = [[Tile(self.block_size, [self.level_offset[0]+((self.block_size+1)*j), self.level_offset[1]+((self.block_size+1)*i)]) for i in range(level["level_width"])] for j in range(level["level_height"])]
+        self.tiles = [[Tile(self.block_size, [self.level_offset[0]+((self.block_size+1)*i), self.level_offset[1]+((self.block_size+1)*j)]) for i in range(level["level_width"])] for j in range(level["level_height"])]
         self.draw()
         
     def draw(self):
@@ -120,8 +120,7 @@ class EditorWindow(Screen):
             pos = [touch.pos[0]-self.level_offset[0], touch.pos[1]-self.level_offset[1]]
             j, i = math.floor(pos[0]/(self.block_size+1)), math.floor(pos[1]/(self.block_size+1))
             self.level[i][j] = self.blocks[self.actual_block]
-            self.tiles[j][i].update(self.actual_block)
-
+            self.tiles[i][j].update(self.actual_block)
 
 class MenuWindow(Screen):
     level_width = ObjectProperty(None)
@@ -132,10 +131,15 @@ class MenuWindow(Screen):
         super().__init__(**kw)
     
     def start_editor(self):
-        if self.level_height.text=="" or self.level_width.text=="" or self.level_name.text=="":
-            level["level_height"] = 10
-            level["level_width"] = 10
-            level["level_name"] = "debil_lenivy"
+        if self.level_name.text=="":
+            if self.level_height.text=="" or self.level_width.text=="":
+                level["level_height"] = 10
+                level["level_width"] = 10
+                level["level_name"] = "debil_lenivy"
+            else:
+                level["level_height"] = int(self.level_height.text)
+                level["level_width"] = int(self.level_width.text)
+                level["level_name"] = "debil"
         else:
             level["level_height"] = int(self.level_height.text)
             level["level_width"] = int(self.level_width.text)
