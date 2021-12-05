@@ -58,7 +58,10 @@ class EditorWindow(Screen):
     def on_enter(self, *args):
         super().on_enter(*args)
         self.level = [[6 for i in range(level["level_width"])] for j in range(level["level_height"])]
-        self.block_size = self.sc[1]*(1/(level["level_height"]+6))
+        if level["level_width"]>level["level_height"]:
+            self.block_size = (self.sc[0]*0.8)*(1/(level["level_width"]+4))
+        else:
+            self.block_size = self.sc[1]*(1/(level["level_height"]+6))
         self.level_offset = [self.block_size*2,self.block_size*2]
         self.tiles = [[Tile(self.block_size, [self.level_offset[0]+((self.block_size+1)*i), self.level_offset[1]+((self.block_size+1)*j)]) for i in range(level["level_width"])] for j in range(level["level_height"])]
         self.draw()

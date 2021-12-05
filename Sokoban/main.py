@@ -45,7 +45,7 @@ def save_data(index, max_):
     except Exception as e:
         print("error saving data", e) 
 
-level_index = 0
+level_index = 1
 SOUNDS = {
     "btn":SoundLoader.load("data/sounds/debili/btn.wav"),
     "restart":SoundLoader.load("data/sounds/debili/restart.wav"),
@@ -168,15 +168,21 @@ class GameWindow(Screen):
     def set_level(self):
         self.level = load_level(self.level_id)
         self.level["map"].reverse()
-        self.tile_size = [
-            self.sc[0]*(1/(self.level["size"][1]+2)),
-            self.sc[0]*(1/(self.level["size"][1]+2))
-        ]
+        if self.level["size"][0]>self.level["size"][1]:
+            self.tile_size = [
+                self.sc[0]*(1/(self.level["size"][0]+2)),
+                self.sc[0]*(1/(self.level["size"][0]+2))
+            ]
+        else:
+            self.tile_size = [
+                self.sc[0]*(1/(self.level["size"][1]+2)),
+                self.sc[0]*(1/(self.level["size"][1]+2))
+            ]
         self.tile_offset = [
-            self.tile_size[0],
+            (self.sc[0]*0.5)-((self.level["size"][1])*self.tile_size[0])*0.5,
             self.sc[1]*0.4+((self.sc[1]*0.6)*0.5)-(self.level["size"][0]*self.tile_size[1])*0.5
         ]
-
+        
     def get_obj(self, x, y):
         pl_pos = self.level["player_pos"]
         return self.level["map"][pl_pos[0]+y][pl_pos[1]+x]
@@ -256,12 +262,13 @@ class LevelWindow(Screen):
     def on_enter(self):
         self.levels_layout.clear_widgets()
         unlocked_level, level_count = get_save_data()
-        for level_index in range(level_count+1):
-            if level_index>unlocked_level:
+        for level_index in range(level_count):
+            if level_index+1>unlocked_level:
                 l = "Locked"
             else:
                 l = "Unlocked"
-            self.levels_layout.add_widget(Button(text=f"Level:{level_index}\n{l}", on_press=partial(self.play_level, level_index, l)))
+            self.levels_layout.add_widget(Button(font_size=self.sc[0]//18,text=f"Level:{level_index+1}\n{l}", 
+                                                on_press=partial(self.play_level, level_index+1, l)))
 
     def play_level(self, li, l, *a):
         if l == "Unlocked":

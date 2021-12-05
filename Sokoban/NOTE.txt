@@ -14,7 +14,8 @@ to do: (✔️)
     - upgrade level editor (✔️)
     - images (✔️)
     - sounds (✔️)
-    - fix editor
+    - fix editor (✔️)
     - add new levels
+    - MASSIVE UPGRADE
     - fix bugs
     - oprimize
