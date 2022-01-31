@@ -12,7 +12,7 @@ from random import randint
 from kivy.core.audio import SoundLoader
 import json
 
-# Window.size = (1280, 720)
+Window.size = (1280, 720)
 
 class Box:
     def __init__(self, screen_width, screen_height, start):
@@ -29,6 +29,7 @@ class Box:
         self.size = (self.screen_height*0.12,self.screen_height*0.12)
         self.pos = (self.x, self.screen_height*0.3)
 
+        # self.images = ["data/images/debili/m.png", "data/images/debili/f.png", "data/images/debili/s.png"]
         self.images = ["data/images/m.png", "data/images/f.png", "data/images/s.png"]
         self.image = self.images[randint(0,2)]
 
@@ -69,6 +70,7 @@ class Dino:
         self.size = (self.screen_height*0.2,self.screen_height*0.2)
         self.pos = (self.screen_width*0.3, self.y)
 
+        # self.image = "data/images/debili/t.png"
         self.image = "data/images/t.png"
         self.dead = False
 

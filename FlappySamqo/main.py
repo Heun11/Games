@@ -21,7 +21,8 @@ class Pipe:
         self.w = screen_width/7
         self.vel = 200
 
-        self.images = ["data/images/t.png", "data/images/f.png", "data/images/m.png"]
+        #self.images = ["data/images/t.png", "data/images/f.png", "data/images/m.png"]
+        self.images = ["data/images/pipe.png", "data/images/pipe.png", "data/images/pipe.png"]
 
         self.screen_width = screen_width
         self.screen_height = screen_height
@@ -90,7 +91,7 @@ class Bird:
         self.screen_width = screen_width
         self.screen_height = screen_height
 
-        self.img = "data/images/samqo.png"
+        self.img = "data/images/bird.png"
 
         self.gravity = 60
         self.vel = 0

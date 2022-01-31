@@ -133,8 +133,8 @@ class GameWindow(Screen):
                             elif self.level["map"][i][j] == self.blocks["c"]:
                                 t = "c"
 
-                            # source = f"data/images/{t}.png"
-                            source = f"data/images/debili/{t}.png"
+                            source = f"data/images/{t}.png"
+                            # source = f"data/images/debili/{t}.png"
 
                             Rectangle(source=source, size=self.tile_size, 
                                         pos=[self.tile_offset[0]+self.tile_size[0]*j, self.tile_offset[1]+self.tile_size[1]*i])
