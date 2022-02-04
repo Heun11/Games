@@ -1,71 +1,110 @@
-import pygame
+import pygame, json
 pygame.init()
 
-WIDTH = 900
-HEIGHT = 600
+WIDTH = 1024
+HEIGHT = 712
 screen = pygame.display.set_mode((WIDTH,HEIGHT))
 pygame.display.set_caption('Platformer Demo')
 clock = pygame.time.Clock()
 
-level = [
-	[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
-	[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-	[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-	[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-	[1,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,0,1],
-	[1,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,1],
-	[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-	[1,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,1],
-	[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-	[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-	[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
-]
-block_size = 45
+# level = [
+# 	[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+# 	[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+# 	[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+# 	[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+# 	[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+# 	[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+# 	[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+# 	[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+# 	[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+# 	[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+# 	[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+# 	[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+# 	[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+# 	[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+# 	[1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+# 	[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+# 	[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+# 	[1,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+# 	[1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+# 	[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+# 	[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+# ]
+# if len(level[0])>len(level):
+# 	block_size = WIDTH/len(level[0])
+# else:
+# 	block_size = HEIGHT/len(level)
+
+with open("data/levels/level0.json", "r") as f:
+	level = json.load(f)
+
+if level["size"][0]>level["size"][1]:
+	block_size = WIDTH/level["size"][0]
+else:
+	block_size = HEIGHT/level["size"][1]
 
 class Player:
 	def __init__(self):
-		self.image = pygame.image.load("data/images/player.png")
-		self.image = pygame.transform.scale(self.image, [block_size, block_size])
-		self.rect = pygame.Rect(block_size*2,block_size*2,block_size,block_size)
+		# self.image = pygame.image.load("data/images/player.png")
+		# self.image = pygame.transform.scale(self.image, [block_size, block_size])
+		self.rect = pygame.Rect(block_size*2,block_size*2,block_size*0.75,block_size)
 		self.xVel = 0
 		self.yVel = 0
 
-		self.speed = 3
-		self.gravity = 0.5
-		self.jump_speed = -12
+		self.speed = block_size/15
+		self.gravity = block_size/90
+		self.jump_speed = -(block_size/3.75)
 		self.on_ground = False
 
 		self.aim_dir = "n" #n-None l-left, r-right, u-up, d-down
 		self.can_shoot = True # set this to be true again, if the arrow will stop
 
 	def collision_horizontal(self, level):
-		self.rect.x += player.xVel * self.speed
+		# for i in range(len(level)):
+		# 	for j in range(len(level[i])):
+		# 		if level[i][j]==1:
+		# 			tile = pygame.Rect(j*block_size,i*block_size, block_size,block_size)
+		# 			if tile.colliderect(self.rect):
+		# 				if self.xVel>0:
+		# 					self.rect.x = tile.x-self.rect.width
+		# 				elif self.xVel<0:
+		# 					self.rect.x = tile.x+tile.width
 
-		for i in range(len(level)):
-			for j in range(len(level[i])):
-				if level[i][j]==1:
-					tile = pygame.Rect(j*block_size,i*block_size, block_size,block_size)
-					if tile.colliderect(self.rect):
-						if self.xVel>0:
-							self.rect.x = tile.x-self.rect.width
-						elif self.xVel<0:
-							self.rect.x = tile.x+tile.width
+		for i in range(len(level["tiles"])):
+			if level["tiles"][i]["t"] == 1: 
+				tile = pygame.draw.rect(screen, (0,255,0), pygame.Rect(level["tiles"][i]["j"]*block_size,level["tiles"][i]["i"]*block_size, block_size-1,block_size-1))
+				if tile.colliderect(self.rect):
+					if self.xVel>0:
+						self.rect.x = tile.x-self.rect.width
+					elif self.xVel<0:
+						self.rect.x = tile.x+tile.width
 
-		self.rect.x -= player.xVel * self.speed
 
 	def collision_vertical(self, level):
-		for i in range(len(level)):
-			for j in range(len(level[i])):
-				if level[i][j]==1:
-					tile = pygame.Rect(j*block_size,i*block_size, block_size,block_size)
-					if tile.colliderect(self.rect):
-						if self.yVel>0:
-							self.rect.y = tile.y-self.rect.height
-							self.yVel = 0
-							self.on_ground = True
-						elif self.yVel<0:
-							self.rect.y = tile.y+tile.height
-							self.yVel = 0
+		# for i in range(len(level)):
+		# 	for j in range(len(level[i])):
+		# 		if level[i][j]==1:
+		# 			tile = pygame.Rect(j*block_size,i*block_size, block_size,block_size)
+		# 			if tile.colliderect(self.rect):
+		# 				if self.yVel>0:
+		# 					self.rect.y = tile.y-self.rect.height
+		# 					self.yVel = 0
+		# 					self.on_ground = True
+		# 				elif self.yVel<0:
+		# 					self.rect.y = tile.y+tile.height
+		# 					self.yVel = 0
+
+		for i in range(len(level["tiles"])):
+			if level["tiles"][i]["t"] == 1: 
+				tile = pygame.draw.rect(screen, (0,255,0), pygame.Rect(level["tiles"][i]["j"]*block_size,level["tiles"][i]["i"]*block_size, block_size-1,block_size-1))
+				if tile.colliderect(self.rect):
+					if self.yVel>0:
+						self.rect.y = tile.y-self.rect.height
+						self.yVel = 0
+						self.on_ground = True
+					elif self.yVel<0:
+						self.rect.y = tile.y+tile.height
+						self.yVel = 0
 
 	def jump(self):
 		if self.on_ground:
@@ -94,22 +133,22 @@ class Player:
 		else:
 			self.xVel = 0
 		
-		if keys[pygame.K_w]:
+		if keys[pygame.K_SPACE]:
 			self.jump()
 
-		if keys[pygame.K_UP]:
-			self.aim_dir = "u"
-		elif keys[pygame.K_DOWN]:
-			self.aim_dir = "d"
-		elif keys[pygame.K_LEFT]:
-			self.aim_dir = "l"
-		elif keys[pygame.K_RIGHT]:
-			self.aim_dir = "r"
-		else:
-			self.aim_dir = "n"
+		# if keys[pygame.K_UP]:
+		# 	self.aim_dir = "u"
+		# elif keys[pygame.K_DOWN]:
+		# 	self.aim_dir = "d"
+		# elif keys[pygame.K_LEFT]:
+		# 	self.aim_dir = "l"
+		# elif keys[pygame.K_RIGHT]:
+		# 	self.aim_dir = "r"
+		# else:
+		# 	self.aim_dir = "n"
 
-		if keys[pygame.K_SPACE]:
-			self.shoot()
+		# if keys[pygame.K_SPACE]:
+		# 	self.shoot()
 
 	def update(self):
 		self.get_input()
@@ -124,8 +163,8 @@ class Player:
 		# print(self.rect.x, self.rect.y, self.xVel, self.yVel)
 		# print(self.aim_dir)
 
-		# pygame.draw.rect(screen, (0,0,255), self.rect)
-		screen.blit(self.image, [self.rect.x, self.rect.y])
+		pygame.draw.rect(screen, (0,0,255), self.rect)
+		# screen.blit(self.image, [self.rect.x, self.rect.y])
 
 
 player = Player()
@@ -133,10 +172,14 @@ player = Player()
 def update():
 	screen.fill((20,20,20))
 
-	for i in range(len(level)):
-		for j in range(len(level[i])):
-			if level[i][j]==1:
-				pygame.draw.rect(screen, (0,255,0), pygame.Rect(j*block_size,i*block_size, block_size-1,block_size-1))
+	# for i in range(len(level)):
+	# 	for j in range(len(level[i])):
+	# 		if level[i][j]==1:
+	# 			pygame.draw.rect(screen, (0,255,0), pygame.Rect(j*block_size,i*block_size, block_size-1,block_size-1))
+
+	for i in range(len(level["tiles"])):
+		if level["tiles"][i]["t"] == 1: 
+			pygame.draw.rect(screen, (0,255,0), pygame.Rect(level["tiles"][i]["j"]*block_size,level["tiles"][i]["i"]*block_size, block_size-1,block_size-1))
 
 	player.update()
 
