@@ -10,9 +10,9 @@ from kivy.uix.button import Button
 import json, math
 
 level = {
-    "level_width":None,
-    "level_height":None,
-    "level_name":None
+    "width":None,
+    "height":None,
+    "name":None
 }
 
 def print_level(level):
@@ -37,7 +37,39 @@ class EditorWindow(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.sc = Window.size
-        
+    
+        self.level = []
+        self.blocks = []
+        self.selected_block = None
+
+        self.save_button = Button(text="save", size_hint=[0.2,0.1], pos_hint={"x":0.8, "y":0.9}, on_press=self.save_level)
+
+    def on_enter(self, *args):
+        super().on_enter(*args)
+        self.level = [[6 for i in range(level["width"])] for j in range(level["height"])]
+        if level["width"]>level["height"]:
+            self.block_size = (self.sc[0]*0.8)*(1/(level["width"]+4))
+        else:
+            self.block_size = self.sc[1]*(1/(level["height"]+4))
+        print(self.block_size)
+        self.level_offset = [self.block_size*2,self.block_size*2]
+        self.tiles = [[Tile(self.block_size-1, [self.level_offset[0]+(self.block_size*i), self.level_offset[1]+(self.block_size*j)]) for i in range(level["width"])] for j in range(level["height"])]
+        self.draw()
+
+    def draw(self):
+        with self.canvas:
+            Color(1,1,1,0.1)
+            Rectangle(pos=[0, 0], size=[self.sc[0]*0.8, self.sc[1]])
+            Color(1,1,1,1)
+            for i in range(len(self.level)):
+                for j in range(len(self.level[i])):
+                    self.tiles[i][j].draw()
+
+
+        self.add_widget(self.save_button)
+
+    def save_level(self, *args):
+        print("saving...")
 
 class MenuWindow(Screen):
     level_width = ObjectProperty(None)
@@ -50,17 +82,17 @@ class MenuWindow(Screen):
     def start_editor(self):
         if self.level_name.text=="":
             if self.level_height.text=="" or self.level_width.text=="":
-                level["level_height"] = 10
-                level["level_width"] = 10
-                level["level_name"] = "debil_lenivy"
+                level["height"] = 10
+                level["width"] = 10
+                level["name"] = "debil_lenivy"
             else:
-                level["level_height"] = int(self.level_height.text)
-                level["level_width"] = int(self.level_width.text)
-                level["level_name"] = "debil"
+                level["height"] = int(self.level_height.text)
+                level["width"] = int(self.level_width.text)
+                level["name"] = "debil"
         else:
-            level["level_height"] = int(self.level_height.text)
-            level["level_width"] = int(self.level_width.text)
-            level["level_name"] = self.level_name.text
+            level["height"] = int(self.level_height.text)
+            level["width"] = int(self.level_width.text)
+            level["name"] = self.level_name.text
 
         self.parent.current = "editor"
         self.parent.transition.direction = "up"
