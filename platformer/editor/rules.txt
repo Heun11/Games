@@ -1,8 +1,0 @@
-Tiles:
-    - {"i":2, "j":0, "t":1, "c":0, "s":0}
-    - "i"(Y)
-    - "j"(X)
-    - "t"(type) = 1-block, 2-button, 3-vanishing_block
-    - "c"(class) = 0-nothing
-    - "s"(state) = 0-true(on), 0-false(off)
-    
